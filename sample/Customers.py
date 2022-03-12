@@ -6,6 +6,7 @@ class Customers(Persons):
 
     def __init__(self):
         self.quit_now = False
+        self.return_now = False
 
         # create the list of customers
         # read existing customers
@@ -22,6 +23,7 @@ class Customers(Persons):
             "Change customer last name" : self.change_customer_lname,
             "Change customer address" : self.change_customer_address,
             "Delete a customer" : self.delete_customer,
+            "Return to Main Menu" : self.return_main,
             "Quit": self.quit
         }
         super().__init__(self.menu_choices,"Customer")
@@ -88,6 +90,9 @@ class Customers(Persons):
     def quit(self):
         self.quit_now = True
 
+    def return_main(self):
+        self.return_now = True
+
     def save(self):
         try:
             with open("customers.csv", "w") as f:
@@ -107,10 +112,3 @@ class Customers(Persons):
         return customers
 
 
-c = Customers()
-while True:
-    c.show_menu()
-    if c.quit_now:
-        break
-    print("Press Enter to return to current menu")
-    input()
