@@ -1,53 +1,64 @@
 from Menus import Menus
 from Customers import Customers
+from Employees import Employees
 
 class Banking:
-    def __init__(self):
-        self.quit_now = False
-        self.return_now = False
-        self.menu_choices = {
-            "Customer Application" : self.show_customer_application,
-            "Employee Application" : self.show_employee_application,
-            "Quit": self.quit
-        }
-        self.menu = Menus(list(self.menu_choices.keys()),"Main")
 
-    def show_menu(self):
+    def __init__(self):
+        self.location = "banking"
+        self.create_default_menu()
+        self.customers = Customers(self)
+        self.employees = Employees(self)
+
+    def create_default_menu(self):
+        self.menu_choices = {
+            "Customer Application" : self.customer_app,
+            "Employee Application" : self.employee_app,
+            "Quit" : self.quit
+        }
+        self.menu_name = "Main"
+
+    def customer_app(self):
+        choices, name = self.customers.get_application_menu()
+        self.get_menu_values(choices, name, "customer_application")
+
+    def customer_manage(self):
+        choices, name = self.customers.get_manage_menu()
+        self.get_menu_values(choices, name, "manage_customers")
+
+    def employee_app(self):
+        choices, name = self.employees.get_application_menu()
+        self.get_menu_values(choices, name, "employee_application")
+
+    def get_menu_values(self,choices, name, location):
+        self.prev_menu_choices, self.prev_menu_name, self.prev_location = [self.menu_choices, self.menu_name, self.location]
+        self.menu_choices, self.menu_name = choices, name
+        self.location = location
+        self.send_menu()
+
+    def send_menu(self):
+        self.menu = Menus(list(self.menu_choices.keys()), self.menu_name)
         self.menu_choices[self.menu.display_menu()]()
 
-    def show_customer_application(self):
-        customer = Customers()
-        self.show_application(customer)
-
-    def show_application(self, application):
-        while application.quit_now==False:
-            application.show_menu()
-            if application.return_now or application.quit_now:
-                self.return_now = True
-                if application.quit_now:
-                    self.quit_now = True
-                break
-            else:
-                if application.quit_now==False and application.return_now==False:
-                    print("Press Enter to return to current menu")
-                    input()
-
-    def show_employee_application(self):
-        print("You asked for the employee applicaton")
 
 
     def quit(self):
-        self.quit_now = True
+        self.location = "quit"
+
+    def previous_menu(self):
+        self.clear_screen()
+        self.menu_choices, self.menu_name, self.location = [self.prev_menu_choices, self.prev_menu_name, self.prev_location]
+        self.send_menu()
+
+    def clear_screen(self):
+        for x in range(20):
+            print("")
+
 
 
 banking = Banking()
-while True:
-    banking.show_menu()
-    if banking.quit_now:
-        break
-    else:
-        if not banking.return_now:
-            print("Press Enter to return to current menu")
-            input()
-        else:
-            banking.return_now = False
+while banking.location!="quit":
+    banking.send_menu()
+
+
+
