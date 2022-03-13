@@ -17,6 +17,9 @@ class Customers():
     def get_application_menu(self):
         menu_choices  = {
             "View my profile" : self.view_one_customer,
+            "View my accounts" : lambda: self.banking.accounts.display_accounts_by_customer_id(self.currentID),
+            "Make a deposit" : lambda: self.banking.accounts.deposit(self.currentID),
+            "Make a withdrawal" : lambda: self.banking.accounts.withdraw(self.currentID),
             "Return to Main Menu" : self.return_main,
             "Quit": self.quit
         }
@@ -43,7 +46,8 @@ class Customers():
             "Change customer last name" : lambda: self.edit_customer("last name"),
             "Change customer address" : lambda: self.edit_customer("address"),
             "Delete a customer" : self.delete_customer,
-            "Return to Previous Menu" : self.return_main,
+            "Return to Previous Menu" : self.return_previous,
+            "Return to Main Menu" : self.return_main,
             "Quit": self.quit
         }
         menu_name = "Customer Management"
@@ -104,11 +108,11 @@ class Customers():
         self.customers.append(c)
         self.save()
 
-
-    def delete_customer(self):
-        pass
-
     def return_main(self):
+        self.banking.location = "return"
+        self.banking.main_menu()
+
+    def return_previous(self):
         self.banking.location = "return"
         self.banking.previous_menu()
 
@@ -143,11 +147,14 @@ class Customers():
 
     def read_customers(self):
         customers = []
-        with open("customers.csv", "r") as f:
-            csv_reader = csv.reader(f)
-            for line in csv_reader:
-                if len(line)>0:
-                    customers.append(Customer(int(line[0]), line[1], line[2], line[3]))
+        try:
+            with open("customers.csv", "r") as f:
+                csv_reader = csv.reader(f)
+                for line in csv_reader:
+                    if len(line)>0:
+                        customers.append(Customer(int(line[0]), line[1], line[2], line[3]))
+        except:
+            customers = []
         return customers
 
 
@@ -173,6 +180,12 @@ class Customers():
         for customer in self.customers:
             if customer.first_name==first and customer.last_name==last:
                 print("That customer already exists.  Please try again.")
+                return True
+        return False
+
+    def id_exists(self, id):
+        for customer in self.customers:
+            if customer.id==id:
                 return True
         return False
 

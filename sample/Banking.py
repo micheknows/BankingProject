@@ -1,6 +1,7 @@
 from Menus import Menus
 from Customers import Customers
 from Employees import Employees
+from Accounts import Accounts
 
 class Banking:
 
@@ -9,6 +10,7 @@ class Banking:
         self.create_default_menu()
         self.customers = Customers(self)
         self.employees = Employees(self)
+        self.accounts = Accounts(self)
 
     def create_default_menu(self):
         self.menu_choices = {
@@ -25,6 +27,10 @@ class Banking:
     def customer_manage(self):
         choices, name = self.customers.get_manage_menu()
         self.get_menu_values(choices, name, "manage_customers")
+
+    def account_manage(self):
+        choices, name = self.accounts.get_manage_menu()
+        self.get_menu_values(choices, name, "account_management")
 
     def employee_app(self):
         choices, name = self.employees.get_application_menu()
@@ -45,6 +51,11 @@ class Banking:
     def quit(self):
         self.location = "quit"
 
+    def main_menu(self):
+        self.clear_screen()
+        self.create_default_menu()
+        self.send_menu()
+
     def previous_menu(self):
         self.clear_screen()
         self.menu_choices, self.menu_name, self.location = [self.prev_menu_choices, self.prev_menu_name, self.prev_location]
@@ -53,6 +64,9 @@ class Banking:
     def clear_screen(self):
         for x in range(20):
             print("")
+
+    def get_customer(self, id):
+        return self.customers.customers[self.customers.get_by_id(id)]
 
 
 
