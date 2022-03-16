@@ -21,7 +21,3 @@ def test_assign_id():
     a = Accounts()
     assert a.assign_id() == 1
 
-
-def test_get_id_list():
-    a = Accounts()
-    assert a.get_id_list() == []

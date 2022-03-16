@@ -9,3 +9,11 @@ class ManageVariables:
             return next_id
         else:
             return 1
+
+
+    def get_id_list(self, master_list):
+        temp = [account['id'] for account in master_list]
+        if temp==None:
+            return []
+        else:
+            return temp

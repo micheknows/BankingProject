@@ -37,16 +37,10 @@ class Accounts:
         self.balance = balance
 
 
-    def get_id_list(self):
-        temp = [account['id'] for account in self.accounts]
-        if temp==None:
-            return []
-        else:
-            return temp
-
 
     def assign_id(self):
-        return self.mv.get_next_id(self.get_id_list())
+        temp_list = self.mv.get_id_list(self.accounts)
+        return self.mv.get_next_id(temp_list)
 
     def __str__(self):
         text = "Account ID:  " + str(self.id)

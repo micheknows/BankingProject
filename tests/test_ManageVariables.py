@@ -7,3 +7,8 @@ def test_get_next_id():
     """ pass a list of integers should give next highest integer"""
     mv = ManageVariables()
     assert mv.get_next_id([1,2,3]) == 4
+
+
+def test_get_id_list():
+    mv = ManageVariables()
+    assert mv.get_id_list([]) == []
