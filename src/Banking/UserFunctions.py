@@ -1,9 +1,11 @@
 from CustomerFunctions import CustomerFunctions
+from EmployeesFunctions import EmployeesFunctions
 
 class UserFunctions:
 
     def __init__(self):
         self.cf = CustomerFunctions()
+        self.ef = EmployeesFunctions()
         self.exit = False
         self.location = "Main"
         self.main_menu_choices = {
@@ -45,6 +47,8 @@ class UserFunctions:
         self.exit=True
 
     def return_menu(self):
+        self.cf.currentID = None
+        self.ef.currentID = None
         self.choices, self.location = self.main_menu_choices, self.main_location
         self.show_menu()
 
@@ -53,7 +57,8 @@ class UserFunctions:
         self.show_menu()
 
     def show_employee_application(self):
-        pass
+        self.choices, self.location = self.ef.employee_application_menu()
+        self.show_menu()
 
 uf = UserFunctions()
 while uf.exit == False:

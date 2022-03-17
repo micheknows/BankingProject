@@ -26,6 +26,7 @@ class AccountFunctions:
         for index, i in enumerate(self.accounts):
             if i.id==account_id:
                 return index
+        return -1
 
     def get_list_account_ids_by_customer_id(self, customer_id):
         return [item.id for item in self.accounts if item.customer_id==customer_id]
