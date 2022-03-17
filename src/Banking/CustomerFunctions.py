@@ -2,7 +2,7 @@ from ManageVariables import ManageVariables
 from Customers import Customers
 from AccountFunctions import AccountFunctions
 
-
+@property
 def current_id(self):
     return self._current_id
 
@@ -14,11 +14,11 @@ def current_id(self, id):
 class CustomerFunctions:
 
     def __init__(self):
+        self.mv = ManageVariables()
         self.customers = []
         self.read()
         self.currentID = None
         self.af = AccountFunctions()
-        self.mv = ManageVariables()
 
     def customer_application_menu(self):
         menu_choices = {
@@ -27,26 +27,32 @@ class CustomerFunctions:
             "Make Deposit" : lambda : self.make_transaction("depositing"),
             "Make Withdrawal" : lambda : self.make_transaction("withdrawing")
         }
-        menu_location = "customer application"
+        menu_location = "Customer Application"
         return menu_choices, menu_location
 
     def view_my_accounts(self):
         while self.currentID==None:
             self.currentID = self.mv.askQuestion("Please enter your ID:  ")
-        print(str(self.af.get_customer_accounts(self.currentID)))
+        if self.get_index_by_id(self.currentID)>-1:
+            print(str(self.af.get_customer_accounts(self.currentID)))
+        else:
+            print("Sorry, that ID is not a customer of this bank.")
 
     def view_my_profile(self):
         while self.currentID==None:
             self.currentID = self.mv.askQuestion("Please enter your ID:  ")
-        print(str(self.get_customer_by_id(self.currentID)))
+        if self.get_index_by_id(self.currentID)>-1:
+            print(str(self.get_customer_by_id(self.currentID)))
+        else:
+            print("Sorry, that ID is not a customer of this bank.")
 
     def make_transaction(self, transaction):
         while self.currentID==None:
             self.currentID = self.mv.askQuestion("Please enter your ID:  ")
         if len(self.af.get_customer_accounts(self.currentID))<1:
-            print("Sorry, you do not have any accounts to use.")
+            print("Sorry, that ID does not have any accounts to use.")
         else:
-            print("Your active accounts are:  ")
+            print("Active accounts are:  ")
             print(str(self.af.get_customer_accounts(self.currentID)))
             while True:
                 try:
@@ -70,7 +76,7 @@ class CustomerFunctions:
                         deposit = deposit * -1
                         return False
                 self.af.deposit(account_id,deposit)
-                print("You were " + transaction + " + "${:,.2f}".format(deposit) + "    account #" + str(account_id) + ".")
+                print("You were " + transaction +  "${:,.2f}".format(deposit) + "    account #" + str(account_id) + ".")
                 print(str(self.af.accounts[self.af.get_index_by_account_id(account_id)]))
             return True
 
@@ -83,10 +89,14 @@ class CustomerFunctions:
         for index, i in enumerate(self.customers):
             if i.id==customer_id:
                 return index
+        return -1
 
 
     def get_customer_by_id(self, customer_id):
-        customer = [customer for customer in self.customers if customer.id==customer_id][0]
+        try:
+            customer = [customer for customer in self.customers if customer.id==customer_id][0]
+        except IndexError:
+            customer = []
         return customer
 
     def save(self):
