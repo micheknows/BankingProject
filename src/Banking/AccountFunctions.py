@@ -27,6 +27,15 @@ class AccountFunctions:
             if i.id==account_id:
                 return index
 
+    def get_list_account_ids_by_customer_id(self, customer_id):
+        return [item.id for item in self.accounts if item.customer_id==customer_id]
+
+    def deposit(self,account,amt):
+        account.deposit(amt)
+
+    def withdraw(self, account):
+        account.depsit(amt)
+
     def save(self):
         templist = [[item.id, item.customer_id, item.account_type, item.balance] for item in self.accounts]
         mv = ManageVariables()
@@ -41,10 +50,3 @@ class AccountFunctions:
 
 
 
-af = AccountFunctions()
-for i in af.get_customer_accounts(1):
-    print(str(i))
-af.createAccount(1, "checking",74.65)
-for i in af.get_customer_accounts(1):
-    print(str(i))
-af.add_fee(1,12.54,"I wanted to")

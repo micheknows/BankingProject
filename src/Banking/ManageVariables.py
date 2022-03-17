@@ -41,3 +41,7 @@ class ManageVariables:
             print("exception " + repr(e))
         return []
 
+    def askQuestion(self,question):
+        print(question)
+        return input()
+
