@@ -1,4 +1,4 @@
-from ManageVariables import ManageVariables
+from HelperFunctions import ManageVariables
 from Customers import Customers
 from AccountFunctions import AccountFunctions
 
