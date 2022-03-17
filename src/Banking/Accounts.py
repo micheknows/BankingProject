@@ -26,7 +26,15 @@ class Accounts:
     def customer_id(self, customer_id):
         self._customer_id = customer_id
 
-    def __init__(self, customer_id=1, id="", balance=0):
+    @property
+    def account_type(self):
+        return self._account_type
+
+    @account_type.setter
+    def account_type(self, account_type):
+        self._account_type = account_type
+
+    def __init__(self, customer_id=1, balance=0, account_type="checking", id=""):
         self.accounts = []
         self.mv = ManageVariables()
         if id == "":
@@ -34,8 +42,14 @@ class Accounts:
         else:
             self.id = id
         self.customer_id = customer_id
+        self.account_type = account_type
         self.balance = balance
 
+    def deposit(self,amt):
+        self.balance = self.balance + amt
+
+    def withdraw(self, amt):
+        self.balance = self.balance - amt
 
 
     def assign_id(self):
@@ -45,6 +59,7 @@ class Accounts:
     def __str__(self):
         text = "Account ID:  " + str(self.id)
         text += "\nCustomer ID:  " + str(self.customer_id)
+        text += "\nAccount type:  " + str(self.account_type)
         text += "\nBalance:  " + "${:,.2f}".format(self._balance)
         text += "\n***************************************************\n"
         return text;
