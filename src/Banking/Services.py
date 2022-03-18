@@ -57,13 +57,11 @@ class Services:
         self.limit = limit
         self.balance = balance
 
-    def deposit(self,amt):
-        self.balance = self.balance + amt
-
-    def withdraw(self, amt):
-        self.balance = self.balance - amt
 
 class credit_cards(Services):
+
+    def __init__(self, id, customer_id, limit, balance):
+        super().__init__(id, customer_id, limit, balance)
 
     def calc_payment(self):
         payment = self.balance / 12.0
@@ -73,13 +71,13 @@ class credit_cards(Services):
 
     def __str__(self):
         text = "Credit Card"
-        text += "Credit Card ID:  " + str(self.id)
+        text += "\nCredit Card ID:  " + str(self.id)
         text += "\nCustomer ID:  " + str(self.customer_id)
-        text += "Credit Limit:  " + "${:,.2f}".format(self._limit)
-        text += "Balance on your card:  " + "${:,.2f}".format(self._balance)
-        text += "Available credit:  " + "${:,.2f}".format(self.limit - self._balance)
-        text += "Next payment:  " + "${:,.2f}".format(self.calc_payment())
-        text += "\n***************************************************\n"
+        text += "\nCredit Limit:  " + "${:,.2f}".format(self._limit)
+        text += "\nBalance on your card:  " + "${:,.2f}".format(self._balance)
+        text += "\nAvailable credit:  " + "${:,.2f}".format(self.limit - self._balance)
+        text += "\nNext payment:  " + "${:,.2f}".format(self.calc_payment())
+        text += "\n\n***************************************************\n\n"
         return text;
 
 
@@ -89,7 +87,6 @@ class Loans(Services):
         super().__init__(id, customer_id, limit, balance)
         self.number_months = number_months
         self.monthly_payment = self.get_monthly_payment()
-        self.type = "loans"
 
     def get_monthly_payment(self):
         return self.limit / self.number_months
@@ -99,12 +96,12 @@ class Loans(Services):
 
     def __str__(self):
         text = "Loan"
-        text += "Loan ID:  " + str(self.id)
+        text += "\nLoan ID:  " + str(self.id)
         text += "\nCustomer ID:  " + str(self.customer_id)
-        text += "Original Loan Amount:  " + "${:,.2f}".format(self._limit)
-        text += "Balance:  " + "${:,.2f}".format(self._balance)
-        text += "Number of Months:  " + "${:,.2f}".format(self.number_months)
-        text += "Monthly Payment Amount:  " + "${:,.2f}".format(self.calc_payment())
-        text += "\n***************************************************\n"
+        text += "\nOriginal Loan Amount:  " + "${:,.2f}".format(self._limit)
+        text += "\nBalance:  " + "${:,.2f}".format(self._balance)
+        text += "\nNumber of Months:  " + str(self.number_months)
+        text += "\nMonthly Payment Amount:  " + "${:,.2f}".format(self.calc_payment())
+        text += "\n\n***************************************************\n\n"
         return text;
 

@@ -19,10 +19,26 @@ class EmployeesFunctions:
             "Create Customer Account" : self.create_account,
             "View Account For A Customer" : self.view_one_customer_account,
             "Add Fee to Customer Account" : self.add_fee,
-            "Create Customer Loan" : self.create_loan
+            "Create Customer Loan" : self.create_loan,
+            "View Customer Loans" : self.view_loans,
+            "Create Customer Credit Card" : self.create_cc,
+            "View Customer Credit Cards" : self.view_ccs
         }
         menu_location = "Employee Application"
         return menu_choices, menu_location
+
+    def create_cc(self):
+        id = self.cf.get_valid_customer()
+        if id>-1:
+            limit = -1
+            while limit < 0:
+                try:
+                    limit = float(self.mv.askQuestion("What is the limit of the credit card?"))
+                except ValueError:
+                    print("Please try again.  The amount must be a number.")
+            balance = 0
+            self.sf.create_credit_card(id, limit, balance)
+            print("Credit Card Created.")
 
     def create_loan(self):
         id = self.cf.get_valid_customer()
@@ -33,14 +49,14 @@ class EmployeesFunctions:
                     limit = float(self.mv.askQuestion("What is the amount of the loan?"))
                 except ValueError:
                     print("Please try again.  The amount must be a number.")
-            balance = 0
+            balance = limit
             number_months = -1
             while number_months < 0:
                 try:
                     number_months = int(self.mv.askQuestion("For how many months?"))
                 except ValueError:
                     print("Please try again.  The number of months must be a number.")
-            self.sf.createLoan(customer_id, limit, balance, number_months )
+            self.sf.createLoan(id, limit, balance, number_months )
             print("Loan Created.")
 
     def create_account(self):
@@ -58,6 +74,18 @@ class EmployeesFunctions:
                     print("Please try again.  The initial deposit must be a number.  If there is no deposit, enter 0.")
             self.af.createAccount(id, [item for item in account_type_list if item[0].lower()==account_type][0], deposit)
             print("Account Created.")
+
+    def view_loans(self):
+        id = self.cf.get_valid_customer()
+        if id>-1:
+            for service in self.sf.get_customer_loans(id):
+                print(str(service))
+
+    def view_ccs(self):
+        id = self.cf.get_valid_customer()
+        if id>-1:
+            for service in self.sf.get_customer_ccs(id):
+                print(str(service))
 
     def create_load(self):
         pass
