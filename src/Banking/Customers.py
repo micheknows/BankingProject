@@ -38,17 +38,10 @@ class Customers:
     def __init__(self, firstname="", lastname="", address="", id=""):
         self.customers = []
         self.mv = ManageVariables()
-        if id == "":
-            self.id = self.assign_id()
-        else:
-            self.id = id
+        self.id = id
         self.firstname = firstname
         self.lastname = lastname
         self.address = address
-
-    def assign_id(self):
-        temp_list = self.mv.get_id_list(self.customers)
-        return self.mv.get_next_id(temp_list)
 
     def __str__(self):
         text = "Customer ID:  " + str(self.id)

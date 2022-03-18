@@ -35,7 +35,6 @@ class Accounts:
         self._account_type = account_type
 
     def __init__(self, customer_id=1, balance=0, account_type="checking", id=""):
-        self.accounts = []
         self.mv = ManageVariables()
         if id == "":
             self.id = self.assign_id()
@@ -51,10 +50,6 @@ class Accounts:
     def withdraw(self, amt):
         self.balance = self.balance - amt
 
-
-    def assign_id(self):
-        temp_list = self.mv.get_id_list(self.accounts)
-        return self.mv.get_next_id(temp_list)
 
     def __str__(self):
         text = "Account ID:  " + str(self.id)

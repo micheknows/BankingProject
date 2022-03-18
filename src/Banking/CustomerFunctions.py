@@ -34,56 +34,58 @@ class CustomerFunctions:
         while self.currentID==None:
             self.currentID = self.mv.askQuestion("Please enter your ID:  ")
         if self.get_index_by_id(self.currentID)>-1:
-            print(str(self.af.get_customer_accounts(self.currentID)))
+            for account in self.af.get_customer_accounts(self.currentID):
+                print(str(account))
         else:
             print("Sorry, that ID is not a customer of this bank.")
 
     def view_my_profile(self):
-        while self.currentID==None:
-            self.currentID = self.mv.askQuestion("Please enter your ID:  ")
-        if self.get_index_by_id(self.currentID)>-1:
+        self.currentID = self.get_valid_customer(self.currentID)
+        if self.currentID>-1:
             print(str(self.get_customer_by_id(self.currentID)))
-        else:
-            print("Sorry, that ID is not a customer of this bank.")
 
     def make_transaction(self, transaction):
-        while self.currentID==None:
-            self.currentID = self.mv.askQuestion("Please enter your ID:  ")
-        if len(self.af.get_customer_accounts(self.currentID))<1:
-            print("Sorry, that ID does not have any accounts to use.")
-        else:
-            print("Active accounts are:  ")
-            print(str(self.af.get_customer_accounts(self.currentID)))
-            while True:
-                try:
-                    account_id =int(self.mv.askQuestion("What is the account number?"))
-                    if account_id in self.af.get_list_account_ids_by_customer_id(self.currentID) or account_id==0:
+        self.currentID = self.get_valid_customer(self.currentID)
+        if self.currentID>-1:
+            if len(self.af.get_customer_accounts(self.currentID))<1:
+                print("Sorry, that ID does not have any accounts to use.")
+            else:
+                print("Active accounts are:  ")
+                self.af.print_account_list(self.af.get_customer_accounts(self.currentID))
+                while True:
+                    try:
+                        account_id =int(self.mv.askQuestion("What is the account number?"))
+                        if account_id in self.af.get_list_account_ids_by_customer_id(self.currentID) or account_id==0:
+                            break
+                    except:
+                        print("Please try again.  That is not a valid account number. (or enter 0 to cancel the deposit)")
+                while True and account_id!=0:
+                    try:
+                        text = "How much are you " + transaction + "?"
+                        transaction_amt = float(self.mv.askQuestion(text))
                         break
-                except:
-                    print("Please try again.  That is not a valid account number. (or enter 0 to cancel the deposit)")
-            while True and account_id!=0:
-                try:
-                    text = "How much are you " + transaction + "?"
-                    transaction_amt = float(self.mv.askQuestion(text))
-                    break
-                except:
-                    print("Please try again.  You must enter a numerical amount. (or enter 0 to cancel the transaction)")
-            if account_id!=0:
-                if transaction=="withdrawing":
-                    if self.af.accounts[self.af.get_index_by_account_id(self.currentID)].balance < deposit:
-                        print("You do not have that much to withdraw.")
-                    else:
-                        deposit = deposit * -1
-                        return False
-                self.af.deposit(account_id,deposit)
-                print("You were " + transaction +  "${:,.2f}".format(deposit) + "    account #" + str(account_id) + ".")
-                print(str(self.af.accounts[self.af.get_index_by_account_id(account_id)]))
-            return True
+                    except:
+                        print("Please try again.  You must enter a numerical amount. (or enter 0 to cancel the transaction)")
+                if account_id!=0:
+                    if transaction=="withdrawing":
+                        if self.af.accounts[self.af.get_index_by_account_id(self.currentID)].balance < transaction_amt:
+                            print("You do not have that much to withdraw.")
+                            return False
+                        else:
+                            transaction_amt = transaction_amt * -1
+                    self.af.deposit(self.af.get_account_by_account_id(account_id),transaction_amt)
+                    print("You were " + transaction +  " ${:,.2f}".format(transaction_amt) + "   :  Account #" + str(account_id) + ".")
+                    print(str(self.af.accounts[self.af.get_index_by_account_id(account_id)]))
+                return True
 
     def createCustomer(self, firstname, lastname, address):
-        self.customers.append(Customers(firstname, lastname, address))
+        self.customers.append(Customers(firstname, lastname, address,self.assign_id()))
         print(str(self.customers[len(self.customers)-1]))
         self.save()
+
+    def assign_id(self):
+        temp_list = self.mv.get_id_list(self.customers)
+        return self.mv.get_next_id(temp_list)
 
     def get_index_by_id(self, customer_id):
         for index, i in enumerate(self.customers):
@@ -91,12 +93,22 @@ class CustomerFunctions:
                 return index
         return -1
 
+    def get_valid_customer(self, id=None):
+        while id==None:
+            id = int(self.mv.askQuestion("Please enter the customer ID:  "))
+        if self.get_customer_by_id(id):
+            return id
+        else:
+            print("That is not a valid customer ID.")
+            return -1
+
+
 
     def get_customer_by_id(self, customer_id):
         try:
             customer = [customer for customer in self.customers if customer.id==customer_id][0]
         except IndexError:
-            customer = []
+            customer = None
         return customer
 
     def save(self):
