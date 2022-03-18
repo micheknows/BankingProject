@@ -1,6 +1,7 @@
 from HelperFunctions import ManageVariables
 from Customers import Customers
 from AccountFunctions import AccountFunctions
+from ServiceFunctions import ServiceFunctions
 
 @property
 def current_id(self):
@@ -19,13 +20,16 @@ class CustomerFunctions:
         self.read()
         self.currentID = None
         self.af = AccountFunctions()
+        self.sf = ServiceFunctions()
 
     def customer_application_menu(self):
         menu_choices = {
             "View My Profile" : self.view_my_profile,
             "View My Accounts" : self.view_my_accounts,
             "Make Deposit" : lambda : self.make_transaction("depositing"),
-            "Make Withdrawal" : lambda : self.make_transaction("withdrawing")
+            "Make Withdrawal" : lambda : self.make_transaction("withdrawing"),
+            "View my Loans" : self.view_loans,
+            "View my Credit Cards" : self.view_ccs
         }
         menu_location = "Customer Application"
         return menu_choices, menu_location
@@ -36,6 +40,24 @@ class CustomerFunctions:
         if self.get_index_by_id(self.currentID)>-1:
             for account in self.af.get_customer_accounts(self.currentID):
                 print(str(account))
+        else:
+            print("Sorry, that ID is not a customer of this bank.")
+
+    def view_loans(self):
+        while self.currentID==None:
+            self.currentID = self.mv.askQuestion("Please enter your ID:  ")
+        if self.get_index_by_id(self.currentID)>-1:
+            for loan in self.sf.get_customer_loans(self.currentID):
+                print(str(loan))
+        else:
+            print("Sorry, that ID is not a customer of this bank.")
+
+    def view_ccs(self):
+        while self.currentID==None:
+            self.currentID = self.mv.askQuestion("Please enter your ID:  ")
+        if self.get_index_by_id(self.currentID)>-1:
+            for cc in self.sf.get_customer_ccs(self.currentID):
+                print(str(cc))
         else:
             print("Sorry, that ID is not a customer of this bank.")
 
