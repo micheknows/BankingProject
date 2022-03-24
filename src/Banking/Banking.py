@@ -1,57 +1,50 @@
 from Menus import Menus
-from UserInteractions import UserInteractions
-from Employees import Employees
 
 class Banking:
 
-    @property
-    def ui(self):
-        return self._ui
-
-    @ui.setter
-    def ui(self, u):
-        self._ui = u
-
-    @property
-    def menus(self):
-        return self._menus
-
-    @menus.setter
-    def menus(self, menu):
-        self._menus = menu
-
     def __init__(self):
-        self.menus = Menus(self)
-        self.menus.main_menu()
-        self.ui = UserInteractions()
-        self.emp = Employees()
-
-
-    def display_menu(self):
-        choice = self.ui.display_menu(self.menus)
-        list(self.menus.menu_choices.values())[choice-1]()
-
-    def employees(self):
-        self.menus.menu_choices = self.emp.get_menu()
-        self.add_suffixes()
-        self.menus.menu_location = self.emp.get_menu_location()
-        self.display_menu()
-
-    def add_suffixes(self):
-        self.menus.menu_choices['Return to Main Menu'] = self.return_main
-        self.menus.menu_choices["Quit"] = self.menus.quit
+        self.do_main_menu()
+        self.quit = False
 
     def show_menu(self):
-        return self.menus.keep_going
+        print(Menus.build_menu(self.menu_choices, self.menu_location))
+        choice = int(input())
+        list(self.menu_choices.values())[choice-1]()
 
-    def return_main(self):
-        self.menus.main_menu()
-        self.display_menu()
+    def emp_menu(self):
+        self.menu_choices = {
+                                "Create a Customer" : self.create_customer,
+                                "Delete a Customer" : self.delete_customer,
+                                "Return to Main Menu" : self.do_main_menu,
+                                "Quit" : self.quit_now
+                            }
+        self.menu_location = "Employee"
 
+    def create_customer(self):
+        pass
+
+    def delete_customer(self):
+        pass
+
+
+    def do_main_menu(self):
+        self.menu_choices = {
+                    "Customer Application" : self.dummy,
+                    "Employee Applicaiton" : self.emp_menu,
+                    "Quit" : self.quit_now
+                    }
+        self.menu_location = "Main"
+
+    def quit_now(self):
+        self.quit = True
+
+
+    def dummy(self):
+        pass
 
 
 b = Banking()
-while b.show_menu():
-    b.display_menu()
-    if b.show_menu():
-        input()
+while not b.quit:
+    b.show_menu()
+    if b.quit:
+        break
