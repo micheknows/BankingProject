@@ -30,7 +30,7 @@ class HelperFunctions:
         return next_id
 
     def format_currency(num):
-        return str(num)
+        return "{:.2f}".format(num)
 
     def get_valid_id(id_list, prompt):
         print(prompt)

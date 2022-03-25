@@ -52,6 +52,7 @@ class Users:
         self.add_item(menu, "View All Customers", self.view_all_customers)
         self.add_item(menu, "Delete A Customer", self.delete_customer)
         self.add_item(menu, "Create an Account", self.create_account)
+        self.add_item(menu,"Add Fee to Account", self.add_account_fee)
         self.add_return(menu)
         self.add_quit(menu)
         self.current_menu = menu
@@ -74,7 +75,8 @@ class Users:
     def create_account(self):
         self.accounts.create_account(self.customers)
 
-
+    def add_account_fee(self):
+        self.accounts.add_fee(self.customers)
 
     def create_customer(self):
         self.customers.create_customer()
