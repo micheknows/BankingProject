@@ -11,8 +11,14 @@ class Customers():
         print("Customer created")
         print(self.customers[len(self.customers)-1])
 
+    def view_self_accounts(self, accounts):
+        accounts.view_account_list(accounts.get_account_list_by_customer_id(self.current_id))
+
     def view_all_customers(self):
         self.view_customer_list(self.customers)
+
+    def get_name_by_id(self, id):
+        return [c.first_name + " " + c.last_name for c in self.customers if c.id==id][0]
 
     def get_current_id(self):
         self.current_id = HelperFunctions.get_valid_id([c.id for c in self.customers], "Enter your customer id:  ")

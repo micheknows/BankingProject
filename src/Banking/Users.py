@@ -1,6 +1,7 @@
 from Menus import Menus
 from HelperFunctions import HelperFunctions
 from Customers import Customers
+from Accounts import Accounts
 
 class Users:
 
@@ -34,6 +35,7 @@ class Users:
         self.current_menu_items = []
         self.create_main_menu()
         self.customers = Customers()
+        self.accounts = Accounts()
 
     def create_main_menu(self):
         self.current_menu_items = []
@@ -49,6 +51,7 @@ class Users:
         self.add_item(menu, "Create a Customer", self.create_customer)
         self.add_item(menu, "View All Customers", self.view_all_customers)
         self.add_item(menu, "Delete A Customer", self.delete_customer)
+        self.add_item(menu, "Create an Account", self.create_account)
         self.add_return(menu)
         self.add_quit(menu)
         self.current_menu = menu
@@ -60,11 +63,17 @@ class Users:
                 self.current_menu_items = []
                 menu = Menus("Customer")
                 self.add_item(menu, "View My Profile", self.view_self)
+                self.add_item(menu, "View My Accounts", self.view_self_accounts)
                 self.add_return(menu)
                 self.add_quit(menu)
                 self.current_menu = menu
         else:
             print("We do not have any customers at this bank, yet.  Therefore, you are unable to login as a customer.")
+
+    def create_account(self):
+        self.accounts.create_account(self.customers)
+
+
 
     def create_customer(self):
         self.customers.create_customer()
@@ -74,6 +83,9 @@ class Users:
 
     def view_self(self):
         self.customers.view_self()
+
+    def view_self_accounts(self):
+        self.customers.view_self_accounts(self.accounts)
 
     def delete_customer(self):
         self.customers.delete_customer()
