@@ -1,11 +1,13 @@
 from HelperFunctions import HelperFunctions
 from Account import Account
+from Data import Data
 
 class Accounts:
 
     def __init__(self):
-        self.accounts = []
+        self.accounts = Data.retrieve_data("accounts")
         self.account_types = ["checking", "savings"]
+
 
     def create_account(self, customers):
         cid_list = [c.id for c in customers.customers]
@@ -18,6 +20,9 @@ class Accounts:
                 self.accounts.append(Account(id, customer_id, [s for s in self.account_types if s.startswith(account_type.lower())][0],balance, customers))
                 print("Account created")
                 print(self.accounts[len(self.accounts)-1])
+                self.save()
+
+
 
     def get_account_list_by_customer_id(self, customer_id):
         return [account for account in self.accounts if account.customer_id == customer_id]
@@ -28,3 +33,6 @@ class Accounts:
                 print(account)
         else:
             print("No accounts for this customer.")
+
+    def save(self):
+        Data.save_data(self.accounts, "accounts")

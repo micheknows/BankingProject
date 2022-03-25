@@ -1,15 +1,17 @@
 from HelperFunctions import HelperFunctions
 from Customer import Customer
+from Data import Data
 
 class Customers():
 
     def __init__(self):
-        self.customers = []
+        self.customers = Data.retrieve_data("customers")
 
     def create_customer(self):
         self.customers.append(Customer([customer.id for customer in self.customers]))
         print("Customer created")
         print(self.customers[len(self.customers)-1])
+        self.save()
 
     def view_self_accounts(self, accounts):
         accounts.view_account_list(accounts.get_account_list_by_customer_id(self.current_id))
@@ -40,6 +42,7 @@ class Customers():
         else:
             print("Customer deleted")
             self.customers = self.delete_customer_by_id(id)
+            save()
 
     def delete_customer_by_id(self, id):
         return [c for c in self.customers if c.id != id]
@@ -47,3 +50,5 @@ class Customers():
     def get_customer_by_id(self, id):
         return [c for c in self.customers if c.id == id][0]
 
+    def save(self):
+        Data.save_data(self.customers, "customers")
