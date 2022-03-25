@@ -22,7 +22,12 @@ class Accounts:
                 print(self.accounts[len(self.accounts)-1])
                 self.save()
 
+    def transaction(self, account_id, amt):
+        self.get_account_by_id(account_id).balance = self.get_account_by_id(account_id).balance + amt
+        self.save()
 
+    def get_account_by_id(self, account_id):
+        return [a for a in self.accounts if a.id==account_id][0]
 
     def get_account_list_by_customer_id(self, customer_id):
         return [account for account in self.accounts if account.customer_id == customer_id]

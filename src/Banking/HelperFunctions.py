@@ -44,6 +44,6 @@ class HelperFunctions:
         print(prompt)
         msg = input()
         while msg.lower() not in string_list and msg != "@":
-            print("That is not a entry.  \n" + prompt + "\nOr, enter @ to cancel and return to the menu.")
+            print("That is not a valid entry.  \n" + prompt + "\nOr, enter @ to cancel and return to the menu.")
             msg = input()
         return msg

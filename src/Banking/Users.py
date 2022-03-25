@@ -64,6 +64,7 @@ class Users:
                 menu = Menus("Customer")
                 self.add_item(menu, "View My Profile", self.view_self)
                 self.add_item(menu, "View My Accounts", self.view_self_accounts)
+                self.add_item(menu, "Make Account Transaction", self.make_account_transaction)
                 self.add_return(menu)
                 self.add_quit(menu)
                 self.current_menu = menu
@@ -86,6 +87,9 @@ class Users:
 
     def view_self_accounts(self):
         self.customers.view_self_accounts(self.accounts)
+
+    def make_account_transaction(self):
+        self.customers.make_account_transaction(self.accounts)
 
     def delete_customer(self):
         self.customers.delete_customer()
