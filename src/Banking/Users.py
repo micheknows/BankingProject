@@ -3,6 +3,7 @@ from HelperFunctions import HelperFunctions
 from Customers import Customers
 from Accounts import Accounts
 
+
 class Users:
 
     @property
@@ -28,7 +29,6 @@ class Users:
     @current_menu_items.setter
     def current_menu_items(self, cmi):
         self._current_menu_items = cmi
-
 
     def __init__(self):
         self.keep_going = True
@@ -58,7 +58,7 @@ class Users:
         self.current_menu = menu
 
     def customer_application(self):
-        if len(self.customers.customers)>0:
+        if len(self.customers.customers) > 0:
             self.customers.get_current_id()
             if self.customers.current_id > 0:
                 self.current_menu_items = []
@@ -73,10 +73,10 @@ class Users:
             print("We do not have any customers at this bank, yet.  Therefore, you are unable to login as a customer.")
 
     def create_account(self):
-        self.accounts.create_account(self.customers)
+        self.accounts.create_account(customers=self.customers)
 
     def add_account_fee(self):
-        self.accounts.add_fee(self.customers)
+        self.accounts.add_fee(customers=self.customers)
 
     def create_customer(self):
         self.customers.create_customer()
@@ -95,7 +95,6 @@ class Users:
 
     def delete_customer(self):
         self.customers.delete_customer()
-
 
     def add_item(self, menu, desc, func):
         menu.add_item(desc)
