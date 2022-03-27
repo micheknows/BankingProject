@@ -1,8 +1,8 @@
-#Banking
+# Banking
 
 Banking is a Python application to illustrate Python concepts using a very implified version of a banking system.
 
-##Requirements
+## Requirements
 This module requires logging and pickle which are packaged with Python3
 
 ## Usage
