@@ -19,7 +19,6 @@ class Data:
             with open(filename + ".data", 'rb') as f:
                 for _ in range(pickle.load(f)):
                     data.append(pickle.load(f))
-            print(str(len(data)) + " " + filename + " loaded.")
         except FileNotFoundError:
             print("There are no stored " + filename + " to load.")
         return data

@@ -4,12 +4,12 @@ from HelperFunctions import HelperFunctions
 class Account:
 
 
-    def __init__(self, id, customer_id, account_type, balance, customers):
+    def __init__(self, id, customer_id, account_type, balance):
         self.id = id
         self.customer_id = customer_id
         self.account_type = account_type
         self.balance = balance
-        self.customers = customers
+        self.customers = Customers()
 
     def __str__(self):
         text = "\n\n**********\n\nACCOUNT ID:  " + str(self.id)

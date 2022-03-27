@@ -2,6 +2,8 @@ from Menus import Menus
 from HelperFunctions import HelperFunctions
 from Customers import Customers
 from Accounts import Accounts
+from Services import Services
+from Employees import Employees
 
 
 class Users:
@@ -36,6 +38,8 @@ class Users:
         self.create_main_menu()
         self.customers = Customers()
         self.accounts = Accounts()
+        self.services = Services()
+        self.employees = Employees()
 
     def create_main_menu(self):
         self.current_menu_items = []
@@ -48,11 +52,12 @@ class Users:
     def employee_application(self):
         self.current_menu_items = []
         menu = Menus("Employee")
-        self.add_item(menu, "Create a Customer", self.create_customer)
-        self.add_item(menu, "View All Customers", self.view_all_customers)
-        self.add_item(menu, "Delete A Customer", self.delete_customer)
-        self.add_item(menu, "Create an Account", self.create_account)
-        self.add_item(menu,"Add Fee to Account", self.add_account_fee)
+        self.add_item(menu, "Create a Customer", lambda:getattr(self.customers, "create_customer")())
+        self.add_item(menu, "View All Customers", lambda:getattr(self.employees, "view_all_customers")())
+        self.add_item(menu, "Delete A Customer", lambda:getattr(self.customers, "delete_customer")())
+        self.add_item(menu, "Create an Account", lambda:getattr(self.employees, "create_account")())
+        self.add_item(menu,"Add Fee to Account", lambda:getattr(self.employees, "add_account_fee")())
+        self.add_item(menu,"Approve Services", lambda:getattr(self.employees, "approve_services")())
         self.add_return(menu)
         self.add_quit(menu)
         self.current_menu = menu
@@ -63,38 +68,18 @@ class Users:
             if self.customers.current_id > 0:
                 self.current_menu_items = []
                 menu = Menus("Customer")
-                self.add_item(menu, "View My Profile", self.view_self)
-                self.add_item(menu, "View My Accounts", self.view_self_accounts)
-                self.add_item(menu, "Make Account Transaction", self.make_account_transaction)
+                self.add_item(menu, "View My Profile", lambda:getattr(self.customers, "view_self")())
+                self.add_item(menu, "View My Accounts", lambda:getattr(self.accounts, "view_customer_accounts")(self.customers.current_id))
+                self.add_item(menu, "Make Account Transaction", lambda:getattr(self.accounts, "make_account_transaction")(self.customers.current_id))
+                self.add_item(menu, "Apply For Loan", lambda:getattr(self.customers, "apply_service")("loan"))
+                self.add_item(menu, "Apply For Credit Card", lambda:getattr(self.customers, "apply_service")("credit card"))
+                self.add_item(menu, "View My Services", lambda:getattr(self.customers, "view_self_services")())
                 self.add_return(menu)
                 self.add_quit(menu)
                 self.current_menu = menu
         else:
             print("We do not have any customers at this bank, yet.  Therefore, you are unable to login as a customer.")
 
-    def create_account(self):
-        self.accounts.create_account(customers=self.customers)
-
-    def add_account_fee(self):
-        self.accounts.add_fee(customers=self.customers)
-
-    def create_customer(self):
-        self.customers.create_customer()
-
-    def view_all_customers(self):
-        self.customers.view_all_customers()
-
-    def view_self(self):
-        self.customers.view_self()
-
-    def view_self_accounts(self):
-        self.customers.view_self_accounts(self.accounts)
-
-    def make_account_transaction(self):
-        self.customers.make_account_transaction(self.accounts)
-
-    def delete_customer(self):
-        self.customers.delete_customer()
 
     def add_item(self, menu, desc, func):
         menu.add_item(desc)

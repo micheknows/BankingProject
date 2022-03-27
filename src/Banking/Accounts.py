@@ -1,9 +1,10 @@
 from HelperFunctions import HelperFunctions
 from Account import Account
 from Data import Data
+from Customers import Customers
 
 
-# noinspection PyArgumentList
+
 class Accounts:
 
     def __init__(self):
@@ -14,7 +15,7 @@ class Accounts:
         def decorator(fn):
             def decorated(*args, **kwargs):
                 if 'customer' in valid:
-                    customer_id = Accounts.get_valid_customer(kwargs['customers'])
+                    customer_id = Accounts.get_valid_customer()
                     if customer_id > 0:
                         if 'account' in valid:
                             account_id = Accounts.get_valid_account_by_customer_id(args[0], customer_id)
@@ -37,7 +38,11 @@ class Accounts:
             account_id = HelperFunctions.get_valid_id(aid_list, "Enter the id for the customer's account:  ")
             return account_id
 
-    def get_valid_customer(customers):
+    def view_customer_accounts(self, customer_id):
+        self.view_account_list(self.get_account_list_by_customer_id(customer_id))
+
+    def get_valid_customer():
+        customers = Customers()
         cid_list = [c.id for c in customers.customers]
         print("Here are the active customers:")
         for customer in customers.customers:
@@ -50,7 +55,7 @@ class Accounts:
             return customer_id
 
     @get_valid(['customer'])
-    def create_account(self, customer_id="", customers=()):
+    def create_account(self, customer_id=""):
         account_id = HelperFunctions.get_next_id([account.id for account in self.accounts])
         account_type = HelperFunctions.get_string_from_list([s[0] for s in self.account_types],"Enter the first "
                                                                                                "letter of the account"
@@ -59,13 +64,13 @@ class Accounts:
         if account_type != "@":
             balance = HelperFunctions.get_float("What is the opening deposit amount:  ")
             type_of_account = [s for s in self.account_types if s.startswith(account_type.lower())][0]
-            self.accounts.append(Account(account_id, customer_id, type_of_account,balance, customers))
+            self.accounts.append(Account(account_id, customer_id, type_of_account,balance))
             print("Account created")
             print(self.accounts[len(self.accounts)-1])
             self.save()
 
     @get_valid(['customer', 'account'])
-    def add_fee(self, customer_id="", account_id="", customers=()):
+    def add_fee(self, customer_id="", account_id=""):
         desc = HelperFunctions.get_string("What is the fee for?")
         amt = HelperFunctions.get_float("How much is the fee?")
         print(str(self.get_account_by_id(account_id)))
@@ -78,6 +83,29 @@ class Accounts:
     def transaction(self, account_id, amt):
         self.get_account_by_id(account_id).balance = self.get_account_by_id(account_id).balance + amt
         self.save()
+
+
+    def make_account_transaction(self, customer_id):
+        transaction_types = ["deposit", "withdraw"]
+        print("Here are your active accounts:")
+        self.view_account_list(self.get_account_list_by_customer_id(customer_id))
+        account_id = HelperFunctions.get_valid_id([a.id for a in self.accounts if a.customer_id == customer_id], "Enter the account id:  ")
+        if account_id > 0:
+            transaction_type = HelperFunctions.get_string_from_list([s[0] for s in transaction_types],"Enter the "
+                                                                                                      "first letter "
+                                                                                                      "of the "
+                                                                                                      "transaction "
+                                                                                                      "type " + repr(
+                transaction_types) + ":  ")
+            if transaction_type != "@":
+                amt = HelperFunctions.get_float("For how much?")
+                if transaction_type == "w":
+                    amt = amt * -1
+                previous_balance = self.get_account_by_id(account_id).balance
+                self.transaction(account_id, amt)
+                print([t for t in transaction_types if t.startswith(transaction_type.lower())][0].capitalize() + "successful in the amount of $" + HelperFunctions.format_currency(amt))
+                print("Previous balance:  $" + HelperFunctions.format_currency(previous_balance))
+                print("New balance:  $" + HelperFunctions.format_currency(self.get_account_by_id(account_id).balance))
 
     def get_account_by_id(self, account_id):
         return [a for a in self.accounts if a.id == account_id][0]
