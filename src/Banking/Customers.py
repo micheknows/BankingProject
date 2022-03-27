@@ -55,6 +55,30 @@ class Customers:
 
     """
 
+    @property
+    def logger(self):
+        return self._logger
+
+    @logger.setter
+    def logger(self, logger):
+        self._logger = logger
+
+    @property
+    def customers(self):
+        return self._customers
+
+    @customers.setter
+    def customers(self, customers):
+        self._customers = customers
+
+    @property
+    def current_id(self):
+        return self._current_id
+
+    @current_id.setter
+    def current_id(self, current_id):
+        self._current_id = current_id
+
     def __init__(self):
         """
         Constructs all the necessary attributes for the Customers object

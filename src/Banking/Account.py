@@ -28,6 +28,46 @@ class Account:
 
     """
 
+    @property
+    def logger(self):
+        return self._logger
+
+    @logger.setter
+    def logger(self, logger):
+        self._logger = logger
+
+    @property
+    def account_id(self):
+        return self._account_id
+
+    @account_id.setter
+    def account_id(self, account_id):
+        self._account_id = account_id
+
+    @property
+    def customer_id(self):
+        return self._customer_id
+
+    @customer_id.setter
+    def customer_id(self, customer_id):
+        self._customer_id = customer_id
+
+    @property
+    def account_type(self):
+        return self._account_type
+
+    @account_type.setter
+    def account_type(self, account_type):
+        self._account_type = account_type
+
+    @property
+    def balance(self):
+        return self._balance
+
+    @balance.setter
+    def balance(self, balance):
+        self._balance = balance
+
     def __init__(self, account_id, customer_id, account_type, balance):
         """
         Constructs all the necessary attributes for the account object

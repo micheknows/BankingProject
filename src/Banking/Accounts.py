@@ -61,6 +61,30 @@ class Accounts:
 
     """
 
+    @property
+    def logger(self):
+        return self._logger
+
+    @logger.setter
+    def logger(self, logger):
+        self._logger = logger
+
+    @property
+    def accounts(self):
+        return self._accounts
+
+    @accounts.setter
+    def accounts(self, accounts):
+        self._accounts = accounts
+
+    @property
+    def account_types(self):
+        return self._account_types
+
+    @account_types.setter
+    def account_types(self, account_types):
+        self._account_types = account_types
+
     def __init__(self):
         """
         Constructs all the necessary attributes for the Accounts object

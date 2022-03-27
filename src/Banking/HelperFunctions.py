@@ -35,6 +35,13 @@ class HelperFunctions:
         returns a valid str from user input that is contained within the list of accepted strings
 
     """
+    @property
+    def logger(self):
+        return self._logger
+
+    @logger.setter
+    def logger(self, logger):
+        self._logger = logger
 
     def __init__(self):
         logging.basicConfig(filename="banking.log",

@@ -22,6 +22,24 @@ class AccountsList:
 
     """
 
+    @property
+    def logger(self):
+        return self._logger
+
+    @logger.setter
+    def logger(self, logger):
+        self._logger = logger
+
+    @property
+    def a_list(self):
+        return self._a_list
+
+    @a_list.setter
+    def a_list(self, a_list):
+        self._a_list = a_list
+
+
+
     def __init__(self, accounts=()):
         """
         Constructs all the necessary attributes for the AccountsList object
@@ -41,9 +59,9 @@ class AccountsList:
         self.logger = logging.getLogger()
         self.logger.setLevel(logging.DEBUG)
         if len(accounts) < 1:
-            self.list = Data.retrieve_data("accounts")
+            self.a_list = Data.retrieve_data("accounts")
         else:
-            self.list = accounts
+            self.a_list = accounts
 
     def __str__(self):
         """
@@ -60,7 +78,7 @@ class AccountsList:
 
         """
         text = ""
-        for account in self.list:
+        for account in self.a_list:
             id_section = "\nAccount ID:  " + str(account.id)
             name_section = "Customer:  " + account.customers.get_name_by_id(account.customer_id)
             balance_section = "Balance:  $" + HelperFunctions.format_currency(account.balance)

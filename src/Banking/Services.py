@@ -24,6 +24,21 @@ class Services:
         prints a list of services for a particular customer id
 
     """
+    @property
+    def logger(self):
+        return self._logger
+
+    @logger.setter
+    def logger(self, logger):
+        self._logger = logger
+
+    @property
+    def services(self):
+        return self._services
+
+    @services.setter
+    def services(self, services):
+        self._services = services
 
     def __init__(self):
         """

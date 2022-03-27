@@ -47,6 +47,14 @@ class Menus:
     def items(self, items):
         self._items = items
 
+    @property
+    def logger(self):
+        return self._logger
+
+    @logger.setter
+    def logger(self, logger):
+        self._logger = logger
+
     def __init__(self, name):
         """
         Constructs all the necessary attributes for the Menus object

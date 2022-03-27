@@ -32,6 +32,13 @@ class Employees:
         approve or deny services for which customers have applied
 
     """
+    @property
+    def logger(self):
+        return self._logger
+
+    @logger.setter
+    def logger(self, logger):
+        self._logger = logger
 
     def __init__(self):
         logging.basicConfig(filename="banking.log",

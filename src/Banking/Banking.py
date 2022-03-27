@@ -86,6 +86,46 @@ class Users:
     def current_menu_items(self, cmi):
         self._current_menu_items = cmi
 
+    @property
+    def logger(self):
+        return self._logger
+
+    @logger.setter
+    def logger(self, logger):
+        self._logger = logger
+
+    @property
+    def customers(self):
+        return self._customers
+
+    @customers.setter
+    def customers(self, customers):
+        self._customers = customers
+
+    @property
+    def accounts(self):
+        return self._accounts
+
+    @accounts.setter
+    def accounts(self, accounts):
+        self._accounts = accounts
+
+    @property
+    def services(self):
+        return self._services
+
+    @services.setter
+    def services(self, services):
+        self._services = services
+
+    @property
+    def employees(self):
+        return self._employees
+
+    @employees.setter
+    def employees(self, employees):
+        self._employees = employees
+
     def __init__(self):
         """
         Constructs all the necessary attributes for the Users class

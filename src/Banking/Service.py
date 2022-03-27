@@ -33,6 +33,62 @@ class Service:
         or if it was denied
 
     """
+    @property
+    def logger(self):
+        return self._logger
+
+    @logger.setter
+    def logger(self, logger):
+        self._logger = logger
+
+    def service_id(self):
+        return self._service_id
+
+    @service_id.setter
+    def service_id(self, service_id):
+        self._service_id = service_id
+
+    def customer_id(self):
+        return self._customer_id
+
+    @customer_id.setter
+    def customer_id(self, customer_id):
+        self._customer_id = customer_id
+
+    def balance(self):
+        return self._balance
+
+    @balance.setter
+    def balance(self, balance):
+        self._balance = balance
+
+    def customers(self):
+        return self._customers
+
+    @customers.setter
+    def customers(self, customers):
+        self._customers = customers
+
+    def approved(self):
+        return self._approved
+
+    @approved.setter
+    def approved(self, approved):
+        self._approved = approved
+
+    def denied(self):
+        return self._denied
+
+    @denied.setter
+    def denied(self, denied):
+        self._denied = denied
+
+    def reason(self):
+        return self._reason
+
+    @reason.setter
+    def reason(self, reason):
+        self._reason = reason
 
     def __init__(self, service_id, customer_id, customers, balance):
         """
@@ -128,6 +184,20 @@ class Loan(Service):
 
     """
 
+    def purpose(self):
+        return self._purpose
+
+    @purpose.setter
+    def purpose(self, purpose):
+        self._purpose = purpose
+
+    def orig_loan_amount(self):
+        return self._orig_loan_amount
+
+    @orig_loan_amount.setter
+    def orig_loan_amount(self, orig_loan_amount):
+        self._orig_loan_amount = orig_loan_amount
+
     def __init__(self, service_id, customer_id, amount, customers, purpose):
         """
         Constructs all the necessary attributes for the Loans object
@@ -210,6 +280,13 @@ class CreditCard(Service):
         returns a string representation of the CreditCard object
 
     """
+
+    def limit(self):
+        return self._limit
+
+    @limit.setter
+    def limit(self, limit):
+        self._limit = limit
 
     def __init__(self, service_id, customer_id, amount, customers):
         """

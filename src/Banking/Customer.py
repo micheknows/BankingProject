@@ -26,6 +26,46 @@ class Customer:
 
     """
 
+    @property
+    def logger(self):
+        return self._logger
+
+    @logger.setter
+    def logger(self, logger):
+        self._logger = logger
+
+    @property
+    def customer_id(self):
+        return self._customer_id
+
+    @customer_id.setter
+    def customer_id(self, customer_id):
+        self._customer_id = customer_id
+
+    @property
+    def first_name(self):
+        return self._first_name
+
+    @first_name.setter
+    def first_name(self, first_name):
+        self._first_name = first_name
+
+    @property
+    def last_name(self):
+        return self._last_name
+
+    @last_name.setter
+    def last_name(self, last_name):
+        self._last_name = last_name
+
+    @property
+    def address(self):
+        return self._address
+
+    @address.setter
+    def address(self, address):
+        self._address = address
+
     def __init__(self, id_list):
         """
         Constructs all the necessary attributes for the customer object
