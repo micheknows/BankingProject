@@ -1,7 +1,5 @@
 import sys
-
 sys.path.append("../src/Banking")
-
 from Accounts import Accounts
 
 
