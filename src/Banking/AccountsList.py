@@ -1,6 +1,7 @@
 from Account import Account
 from Data import Data
 from HelperFunctions import HelperFunctions
+import logging
 
 
 class AccountsList:
@@ -33,6 +34,12 @@ class AccountsList:
                 list of accounts
 
         """
+
+        logging.basicConfig(filename="banking.log",
+                            format='%(asctime)s %(message)s',
+                            filemode='w')
+        self.logger = logging.getLogger()
+        self.logger.setLevel(logging.DEBUG)
         if len(accounts) < 1:
             self.list = Data.retrieve_data("accounts")
         else:

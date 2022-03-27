@@ -1,4 +1,5 @@
 from HelperFunctions import HelperFunctions
+import logging
 
 
 class Customer:
@@ -35,6 +36,12 @@ class Customer:
                 list of the ids associated with all customer objects
 
         """
+
+        logging.basicConfig(filename="banking.log",
+                            format='%(asctime)s %(message)s',
+                            filemode='w')
+        self.logger = logging.getLogger()
+        self.logger.setLevel(logging.DEBUG)
         self.customer_id = HelperFunctions.get_next_id(id_list)
         self.first_name = HelperFunctions.get_string("Please enter the customer's first name:  ")
         self.last_name = HelperFunctions.get_string("Please enter the customer's last name:  ")

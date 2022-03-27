@@ -1,4 +1,5 @@
 from HelperFunctions import HelperFunctions
+import logging
 
 
 # noinspection PyIncorrectDocstring
@@ -50,6 +51,12 @@ class Service:
 
 
         """
+
+        logging.basicConfig(filename="banking.log",
+                            format='%(asctime)s %(message)s',
+                            filemode='w')
+        self.logger = logging.getLogger()
+        self.logger.setLevel(logging.DEBUG)
         self.service_id = service_id
         self.customer_id = customer_id
         self.balance = balance

@@ -3,6 +3,7 @@ from Services import Services
 from Customers import Customers
 from Accounts import Accounts
 from Data import Data
+import logging
 
 
 # noinspection PyIncorrectDocstring
@@ -31,6 +32,13 @@ class Employees:
         approve or deny services for which customers have applied
 
     """
+
+    def __init__(self):
+        logging.basicConfig(filename="banking.log",
+                            format='%(asctime)s %(message)s',
+                            filemode='w')
+        self.logger = logging.getLogger()
+        self.logger.setLevel(logging.DEBUG)
 
     # noinspection PyMethodMayBeStatic
     def view_all_customers(self):

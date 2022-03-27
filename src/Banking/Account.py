@@ -1,5 +1,6 @@
 from Customers import Customers
 from HelperFunctions import HelperFunctions
+import logging
 
 
 class Account:
@@ -43,6 +44,12 @@ class Account:
 
 
         """
+
+        logging.basicConfig(filename="banking.log",
+                            format='%(asctime)s %(message)s',
+                            filemode='w')
+        self.logger = logging.getLogger()
+        self.logger.setLevel(logging.DEBUG)
         self.account_id = account_id
         self.customer_id = customer_id
         self.account_type = account_type

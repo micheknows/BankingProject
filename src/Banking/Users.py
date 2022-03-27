@@ -4,6 +4,7 @@ from Customers import Customers
 from Accounts import Accounts
 from Services import Services
 from Employees import Employees
+import logging
 
 
 # noinspection PyIncorrectDocstring
@@ -95,6 +96,12 @@ class Users:
 
 
         """
+
+        logging.basicConfig(filename="banking.log",
+                            format='%(asctime)s %(message)s',
+                            filemode='w')
+        self.logger = logging.getLogger()
+        self.logger.setLevel(logging.DEBUG)
         self.keep_going = True
         self.current_menu = None
         self.current_menu_items = []
@@ -183,6 +190,7 @@ class Users:
                 self.add_quit(menu)
                 self.current_menu = menu
         else:
+            self.logger.warning("No customers were available.  Does data exist?")
             print("We do not have any customers at this bank, yet.  Therefore, you are unable to login as a customer.")
 
     def add_item(self, menu, desc, func):

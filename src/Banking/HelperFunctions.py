@@ -1,3 +1,6 @@
+import logging
+
+
 class HelperFunctions:
     """
     A class to provide helper functions
@@ -32,6 +35,13 @@ class HelperFunctions:
         returns a valid str from user input that is contained within the list of accepted strings
 
     """
+
+    def __init__(self):
+        logging.basicConfig(filename="banking.log",
+                            format='%(asctime)s %(message)s',
+                            filemode='w')
+        self.logger = logging.getLogger()
+        self.logger.setLevel(logging.DEBUG)
 
     @staticmethod
     def get_string(prompt):

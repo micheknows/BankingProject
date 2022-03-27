@@ -3,6 +3,7 @@ from Account import Account
 from Data import Data
 from Customers import Customers
 from AccountsList import AccountsList
+import logging
 
 
 # noinspection PyIncorrectDocstring
@@ -73,10 +74,15 @@ class Accounts:
 
 
         """
+
+        logging.basicConfig(filename="banking.log",
+                            format='%(asctime)s %(message)s',
+                            filemode='w')
+        self.logger = logging.getLogger()
+        self.logger.setLevel(logging.DEBUG)
         self.accounts = Data.retrieve_data("accounts")
         self.account_types = ["checking", "savings"]
 
-    @staticmethod
     def get_valid(valid):
         """
         determines if decorated function requires a valid customer and/or account id
@@ -106,7 +112,6 @@ class Accounts:
             return decorated
         return decorator
 
-    @staticmethod
     def get_valid_account_by_customer_id(customer_id):
         """
         returns a valid account id from user input
@@ -149,7 +154,6 @@ class Accounts:
         """
         self.view_account_list(self.get_account_list_by_customer_id(customer_id))
 
-    @staticmethod
     def get_valid_customer():
         """
         returns a valid customer id from user input

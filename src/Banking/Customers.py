@@ -2,6 +2,7 @@ from HelperFunctions import HelperFunctions
 from Customer import Customer
 from Data import Data
 from Services import Services
+import logging
 
 
 # noinspection PyIncorrectDocstring
@@ -64,6 +65,12 @@ class Customers:
 
 
         """
+
+        logging.basicConfig(filename="banking.log",
+                            format='%(asctime)s %(message)s',
+                            filemode='w')
+        self.logger = logging.getLogger()
+        self.logger.setLevel(logging.DEBUG)
         self.customers = Data.retrieve_data("customers")
         self.current_id = None
 

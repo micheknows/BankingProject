@@ -1,3 +1,6 @@
+import logging
+
+
 # noinspection PyIncorrectDocstring
 class Menus:
     """
@@ -57,6 +60,12 @@ class Menus:
 
 
         """
+
+        logging.basicConfig(filename="banking.log",
+                            format='%(asctime)s %(message)s',
+                            filemode='w')
+        self.logger = logging.getLogger()
+        self.logger.setLevel(logging.DEBUG)
         self.name = name
         self.items = []
 

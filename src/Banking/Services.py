@@ -2,6 +2,7 @@ from HelperFunctions import HelperFunctions
 from Service import Service, Loan, CreditCard
 from Data import Data
 from operator import attrgetter
+import logging
 
 
 class Services:
@@ -34,6 +35,12 @@ class Services:
 
 
         """
+
+        logging.basicConfig(filename="banking.log",
+                            format='%(asctime)s %(message)s',
+                            filemode='w')
+        self.logger = logging.getLogger()
+        self.logger.setLevel(logging.DEBUG)
         self.services = Data.retrieve_data("services")
 
     def apply_service(self, service_type, customer_id):

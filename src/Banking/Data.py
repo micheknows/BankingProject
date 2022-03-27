@@ -1,4 +1,5 @@
 import pickle
+import logging
 
 
 class Data:
@@ -20,6 +21,13 @@ class Data:
         returns the data retrieved from the filename
 
     """
+    def __init__(self):
+        logging.basicConfig(filename="banking.log",
+                            format='%(asctime)s %(message)s',
+                            filemode='w')
+        self.logger = logging.getLogger()
+        self.logger.setLevel(logging.DEBUG)
+
     @staticmethod
     def save_data(data, filename):
         # noinspection GrazieInspection
