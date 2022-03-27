@@ -77,7 +77,7 @@ class Accounts:
 
         logging.basicConfig(filename="banking.log",
                             format='%(asctime)s %(message)s',
-                            filemode='w')
+                            filemode='a')
         self.logger = logging.getLogger()
         self.logger.setLevel(logging.DEBUG)
         self.accounts = Data.retrieve_data("accounts")
@@ -169,9 +169,15 @@ class Accounts:
 
         """
         customers = Customers()
-        cid_list = [c.id for c in customers.customers]
+        cid_list = [c.customer_id for c in customers.customers]
         if len(customers.customers) < 1:
             print("There are no valid customers at this bank.")
+            logging.basicConfig(filename="banking.log",
+                            format='%(asctime)s %(message)s',
+                            filemode='a')
+            logger = logging.getLogger()
+            logger.setLevel(logging.DEBUG)
+            logger.warning("No customers are loaded.  Does data exist?")
             return 0
         else:
             print("Here are the active customers:")
@@ -255,8 +261,12 @@ class Accounts:
         None
 
         """
-        self.get_account_by_id(account_id).balance = self.get_account_by_id(account_id).balance + amt
-        self.save()
+        try:
+            self.get_account_by_id(account_id).balance = self.get_account_by_id(account_id).balance + amt
+            self.save()
+        except AttributeError:
+            self.logger.error("User tried to do a transaction for the account id " + str(account_id))
+            print("That account id is invalid.")
 
     def make_account_transaction(self, customer_id):
         """
@@ -310,7 +320,10 @@ class Accounts:
             the account object that matches the account id
 
         """
-        return [a for a in self.accounts if a.id == account_id][0]
+        try:
+            return [a for a in self.accounts if a.id == account_id][0]
+        except IndexError:
+            return 0
 
     def get_account_list_by_customer_id(self, customer_id):
         """

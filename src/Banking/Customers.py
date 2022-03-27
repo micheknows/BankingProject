@@ -68,7 +68,7 @@ class Customers:
 
         logging.basicConfig(filename="banking.log",
                             format='%(asctime)s %(message)s',
-                            filemode='w')
+                            filemode='a')
         self.logger = logging.getLogger()
         self.logger.setLevel(logging.DEBUG)
         self.customers = Data.retrieve_data("customers")
@@ -107,7 +107,11 @@ class Customers:
             properly formatted full name of customer object
 
         """
-        return [c.first_name + " " + c.last_name for c in self.customers if c.customer_id == customer_id][0]
+        customer_name = [c.first_name + " " + c.last_name for c in self.customers if c.customer_id == customer_id]
+        if len(customer_name) > 0:
+            return customer_name[0]
+        else:
+            return ""
 
     def get_current_id(self):
         """
@@ -245,7 +249,10 @@ class Customers:
             customer object that matches customer id
 
         """
-        return [c for c in self.customers if c.customer_id == customer_id][0]
+        try:
+            return [c for c in self.customers if c.customer_id == customer_id][0]
+        except IndexError:
+            return None
 
     def save(self):
         """

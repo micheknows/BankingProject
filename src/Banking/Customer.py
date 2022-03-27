@@ -39,7 +39,7 @@ class Customer:
 
         logging.basicConfig(filename="banking.log",
                             format='%(asctime)s %(message)s',
-                            filemode='w')
+                            filemode='a')
         self.logger = logging.getLogger()
         self.logger.setLevel(logging.DEBUG)
         self.customer_id = HelperFunctions.get_next_id(id_list)

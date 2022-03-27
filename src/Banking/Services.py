@@ -38,7 +38,7 @@ class Services:
 
         logging.basicConfig(filename="banking.log",
                             format='%(asctime)s %(message)s',
-                            filemode='w')
+                            filemode='a')
         self.logger = logging.getLogger()
         self.logger.setLevel(logging.DEBUG)
         self.services = Data.retrieve_data("services")
