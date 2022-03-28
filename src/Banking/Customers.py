@@ -111,10 +111,14 @@ class Customers:
         None
 
         """
-        self.customers.append(Customer([customer.customer_id for customer in self.customers]))
-        print("Customer created")
-        print(self.customers[len(self.customers)-1])
-        self.save()
+        try:
+            self.customers.append(Customer([customer.customer_id for customer in self.customers]))
+            print("Customer created")
+            print(self.customers[len(self.customers)-1])
+            self.save()
+        except e:
+            print("Could not create customer.  Please try again.")
+            self.logger.critical("Could not create a new customer:  \n" + str(e))
 
     def get_name_by_id(self, customer_id):
         """
@@ -135,6 +139,7 @@ class Customers:
         if len(customer_name) > 0:
             return customer_name[0]
         else:
+            self.logger.warning("Could not find customer to match customer id:  " + str(customer_id))
             return ""
 
     def get_current_id(self):
@@ -189,6 +194,7 @@ class Customers:
         if len(clist) > 0:
             print(self.brief_list(clist=clist))
         else:
+            self.logger.warning("There are no customers.  Is the data loaded?")
             print("There are no customers to view.")
 
     # noinspection PyMethodMayBeStatic
@@ -234,6 +240,7 @@ class Customers:
                                                                                      "customer you "
                                                                                      "wish to delete:  ")
         if c_id == 0:
+            self.logger.warning("Tried unsuccessfully to delete a customer.")
             print("No valid customer to delete")
         else:
             print("Customer deleted")
@@ -276,6 +283,7 @@ class Customers:
         try:
             return [c for c in self.customers if c.customer_id == customer_id][0]
         except IndexError:
+            self.logger.warning("There was no customer to match customer id:  " + str(customer_id))
             return None
 
     def save(self):

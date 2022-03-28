@@ -6,7 +6,7 @@ from AccountsList import AccountsList
 import logging
 
 
-# noinspection PyIncorrectDocstring
+# noinspection PyIncorrectDocstring,PyMethodParameters
 class Accounts:
     """
     A class to handle tasks associated with accounts
@@ -125,7 +125,7 @@ class Accounts:
         def decorator(fn):
             def decorated(*args, **kwargs):
                 if 'customer' in valid:
-                    customer_id = Accounts.get_valid_customer()
+                    customer_id = Accounts.get_valid_customer(Accounts())
                     if customer_id > 0:
                         if 'account' in valid:
                             account_id = Accounts.get_valid_account_by_customer_id(customer_id)
@@ -152,8 +152,9 @@ class Accounts:
 
         """
         accounts = Data.retrieve_data("accounts")
-        aid_list = [a.id for a in accounts if a.customer_id == customer_id]
+        aid_list = [a.account_id for a in accounts if a.customer_id == customer_id]
         if len(Accounts.get_account_list_by_customer_id(Accounts(), customer_id)) < 1:
+            self.logger.warning("There are no accounts for a customer.  Is the data loaded?")
             print("There are no valid accounts for this customer.")
             return 0
         else:
@@ -178,7 +179,8 @@ class Accounts:
         """
         self.view_account_list(self.get_account_list_by_customer_id(customer_id))
 
-    def get_valid_customer():
+    # noinspection PyMethodMayBeStatic
+    def get_valid_customer(self):
         """
         returns a valid customer id from user input
 
@@ -197,8 +199,8 @@ class Accounts:
         if len(customers.customers) < 1:
             print("There are no valid customers at this bank.")
             logging.basicConfig(filename="banking.log",
-                            format='%(asctime)s %(message)s',
-                            filemode='a')
+                                format='%(asctime)s %(message)s',
+                                filemode='a')
             logger = logging.getLogger()
             logger.setLevel(logging.DEBUG)
             logger.warning("No customers are loaded.  Does data exist?")
@@ -226,7 +228,7 @@ class Accounts:
         None
 
         """
-        account_id = HelperFunctions.get_next_id([account.id for account in self.accounts])
+        account_id = HelperFunctions.get_next_id([account.account_id for account in self.accounts])
         account_type = HelperFunctions.get_string_from_list([s[0] for s in self.account_types],"Enter the first "
                                                                                                "letter of the account"
                                                                                                " type " + repr(
@@ -309,7 +311,7 @@ class Accounts:
         transaction_types = ["deposit", "withdraw"]
         print("Here are your active accounts:")
         self.view_account_list(self.get_account_list_by_customer_id(customer_id))
-        id_list = [a.id for a in self.accounts if a.customer_id == customer_id]
+        id_list = [a.account_id for a in self.accounts if a.customer_id == customer_id]
         account_id = HelperFunctions.get_valid_id(id_list, "Enter the account id:  ")
         if account_id > 0:
             transaction_type = HelperFunctions.get_string_from_list([s[0] for s in transaction_types],"Enter the "
@@ -345,8 +347,9 @@ class Accounts:
 
         """
         try:
-            return [a for a in self.accounts if a.id == account_id][0]
+            return [a for a in self.accounts if a.account_id == account_id][0]
         except IndexError:
+            self.logger.error("Tried to get an account by an invalid id. Account id:  " + str(account_id))
             return 0
 
     def get_account_list_by_customer_id(self, customer_id):

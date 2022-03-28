@@ -112,17 +112,18 @@ class Employees:
         None
 
         """
-        services = Services()
+        services = Services(Customers())
         waiting_list = [service for service in services.services if not service.approved and not service.denied]
         print("\n\nThere are " + str(len(waiting_list)) + " services waiting for a credit decision.\n\n")
-        for item in waiting_list:
-            print(str(item))
-            approve = HelperFunctions.get_string_from_list(["a", "d", "w"], "Please enter a to approve or d to deny "
-                                                                            "this application. (or enter w to wait)")
-            if approve == "a":
-                item.approve = True
-                Data.save_data(services.services, "services")
-            elif approve == "d":
-                reason = HelperFunctions.get_string("What is the denial reason?")
-                item.deny(reason)
-                Data.save_data(services.services, "services")
+        for item in services.services:
+            if item in waiting_list:
+                print(str(item))
+                approve = HelperFunctions.get_string_from_list(["a", "d", "w"], "Please enter a to approve or d to "
+                                                               "deny this application (or  w to wait)")
+                if approve == "a":
+                    item.approve_app()
+                    Data.save_data(services.services, "services")
+                elif approve == "d":
+                    reason = HelperFunctions.get_string("What is the denial reason?")
+                    item.deny(reason)
+                    Data.save_data(services.services, "services")

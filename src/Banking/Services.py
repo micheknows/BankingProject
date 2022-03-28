@@ -40,7 +40,7 @@ class Services:
     def services(self, services):
         self._services = services
 
-    def __init__(self):
+    def __init__(self, customers):
         """
         Constructs all the necessary attributes for the Services object
 
@@ -56,6 +56,7 @@ class Services:
                             filemode='a')
         self.logger = logging.getLogger()
         self.logger.setLevel(logging.DEBUG)
+        self.customers = customers
         self.services = Data.retrieve_data("services")
 
     def apply_service(self, service_type, customer_id):
@@ -74,17 +75,16 @@ class Services:
         None
 
         """
-        customers = Data.retrieve_data("customers")
         amt = HelperFunctions.get_float("How much do you want to apply for?")
         if amt > 0:
             if service_type == "loan":
                 purpose = HelperFunctions.get_string("What is the purpose of the loan?")
                 self.services.append(
                     Loan(HelperFunctions.get_next_id([service.service_id for service in self.services]), customer_id,
-                         amt, customers, purpose))
+                         amt, self.customers, purpose))
             else:
-                service_id = CreditCard(HelperFunctions.get_next_id([service.service_id for service in self.services]))
-                self.services.append(service_id, customer_id, amt, customers)
+                service_id = HelperFunctions.get_next_id([service.service_id for service in self.services])
+                self.services.append(CreditCard(service_id, customer_id, amt, self.customers))
         Data.save_data(self.services, "services")
         print(str(self.services[len(self.services)-1]))
 
@@ -102,6 +102,7 @@ class Services:
         None
 
         """
+        self.services = Data.retrieve_data("services")
         view_list = [service for service in self.services if service.customer_id == customer_id and not service.denied]
         view_list.sort(key=attrgetter('approved'), reverse=True)
         deny_list = [service for service in self.services if service.customer_id == customer_id and service.denied]

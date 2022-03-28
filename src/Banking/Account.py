@@ -114,7 +114,7 @@ class Account:
         text = "\n\n**********\n\nACCOUNT ID:  " + str(self.account_id)
         try:
             text = text + "\nCustomer:  " + customers.get_name_by_id(self.customer_id)
-        except IndexError:
+        except IndexError:                                                              # customer_id was not valid
             text = text + "\nERROR:  THIS ACCOUNT IS NOT ASSOCIATED WITH A VALID CUSTOMER"
             self.logger.error("Account id " + str(self.account_id) + " is associated with customer id " +
                               str(self.customer_id) + " which is not a valid customer id.")

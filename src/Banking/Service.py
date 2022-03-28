@@ -1,4 +1,5 @@
 from HelperFunctions import HelperFunctions
+from Data import Data
 import logging
 
 
@@ -41,6 +42,7 @@ class Service:
     def logger(self, logger):
         self._logger = logger
 
+    @property
     def service_id(self):
         return self._service_id
 
@@ -48,6 +50,7 @@ class Service:
     def service_id(self, service_id):
         self._service_id = service_id
 
+    @property
     def customer_id(self):
         return self._customer_id
 
@@ -55,6 +58,7 @@ class Service:
     def customer_id(self, customer_id):
         self._customer_id = customer_id
 
+    @property
     def balance(self):
         return self._balance
 
@@ -62,13 +66,7 @@ class Service:
     def balance(self, balance):
         self._balance = balance
 
-    def customers(self):
-        return self._customers
-
-    @customers.setter
-    def customers(self, customers):
-        self._customers = customers
-
+    @property
     def approved(self):
         return self._approved
 
@@ -76,6 +74,7 @@ class Service:
     def approved(self, approved):
         self._approved = approved
 
+    @property
     def denied(self):
         return self._denied
 
@@ -83,6 +82,7 @@ class Service:
     def denied(self, denied):
         self._denied = denied
 
+    @property
     def reason(self):
         return self._reason
 
@@ -136,7 +136,24 @@ class Service:
 
         """
         self.reason = reason
+        self.denied = True
         self.balance = 0
+
+    def approve_app(self):
+        """
+        approves the customer application
+
+        Parameters
+        -------------
+        None
+
+        Returns
+        -------------
+        None
+
+        """
+        self.approved = True
+        self.logger.debug(str(self.service_id) + " is approved?" + str(self.approved))
 
     def approval_message(self):
         """
@@ -154,6 +171,8 @@ class Service:
         """
         text = ""
         if not self.approved:
+            self.logger.debug("Going here and the service for " +
+                              str(self.customer_id) + " is approved?" + str(self.approved))
             if not self.denied:
                 text = "\n\nYOUR APPLICATION FOR THE FOLLOWING IS PROCESSING.  WE WILL INFORM YOU OF OUR CREDIT " \
                        "DECISION.\n\n "
@@ -184,6 +203,7 @@ class Loan(Service):
 
     """
 
+    @property
     def purpose(self):
         return self._purpose
 
@@ -191,6 +211,7 @@ class Loan(Service):
     def purpose(self, purpose):
         self._purpose = purpose
 
+    @property
     def orig_loan_amount(self):
         return self._orig_loan_amount
 
@@ -281,6 +302,7 @@ class CreditCard(Service):
 
     """
 
+    @property
     def limit(self):
         return self._limit
 

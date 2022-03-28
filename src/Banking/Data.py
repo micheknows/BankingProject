@@ -82,5 +82,7 @@ class Data:
                 for _ in range(pickle.load(f)):
                     data.append(pickle.load(f))
         except FileNotFoundError:
+            d = Data()
+            d.logger.warning("No datafile for " + filename)
             print("There are no stored " + filename + " to load.")
         return data

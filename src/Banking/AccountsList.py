@@ -1,5 +1,6 @@
 from Account import Account
 from Data import Data
+from Customers import Customers
 from HelperFunctions import HelperFunctions
 import logging
 
@@ -37,8 +38,6 @@ class AccountsList:
     @a_list.setter
     def a_list(self, a_list):
         self._a_list = a_list
-
-
 
     def __init__(self, accounts=()):
         """
@@ -79,8 +78,9 @@ class AccountsList:
         """
         text = ""
         for account in self.a_list:
-            id_section = "\nAccount ID:  " + str(account.id)
-            name_section = "Customer:  " + account.customers.get_name_by_id(account.customer_id)
+            id_section = "\nAccount ID:  " + str(account.account_id)
+            c = Customers()
+            name_section = "Customer:  " + c.get_name_by_id(account.customer_id)
             balance_section = "Balance:  $" + HelperFunctions.format_currency(account.balance)
             text = text + '{:<25} {:<60} {}'.format(id_section, name_section, balance_section)
         return text

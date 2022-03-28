@@ -148,7 +148,7 @@ class Users:
         self.create_main_menu()
         self.customers = Customers()
         self.accounts = Accounts()
-        self.services = Services()
+        self.services = Services(self.customers)
         self.employees = Employees()
 
     def create_main_menu(self):
@@ -225,7 +225,7 @@ class Users:
                 self.add_item(menu, "Apply For Credit Card",
                               lambda:getattr(self.services, "apply_service")("credit card", self.customers.current_id))
                 self.add_item(menu, "View My Services",
-                              lambda:getattr(self.customers, "view_self_services")(self.customers.current_id))
+                              lambda:getattr(self.services, "view_services_list")(self.customers.current_id))
                 self.add_return(menu)
                 self.add_quit(menu)
                 self.current_menu = menu
@@ -331,8 +331,12 @@ class Users:
 
         """
         print(self.current_menu)
-        choice = int(input())
-        self.current_menu_items[choice-1]()
+        choice = HelperFunctions.get_integer("")
+        if self.keep_going:
+            if choice > 0 and choice <= len(self.current_menu_items):
+                self.current_menu_items[choice-1]()
+            else:
+                print("That menu choice is not valid.  Please try again.")
 
 
 u = Users()
